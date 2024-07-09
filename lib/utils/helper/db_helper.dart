@@ -26,7 +26,7 @@ class DbHelper {
             "CREATE TABLE cate (id INTEGER PRIMARY KEY AUTOINCREMENT,category TEXT)";
         db.execute(query);
         String query2 =
-            "CREATE TABLE trans(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,amount TEXT,date TEXT,timeTEXT,category TEXT,status INTEGER)";
+            "CREATE TABLE trans(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,amount TEXT,date TEXT,time TEXT,category TEXT,status INTEGER)";
         db.execute(query2);
       },
     );
@@ -61,13 +61,28 @@ class DbHelper {
       String time, String category, int status) async {
     db = await checkDB();
     String query =
-        "INSERT INTO trans (category) VALUES ('$name','$amount','$date','$time','$category','$status')";
+        "INSERT INTO trans (name,amount,date,time,category,status) VALUES ('$name','$amount','$date','$time','$category','$status')";
     db!.rawInsert(query);
   }
 
-  void updateProductDB() {}
+  Future<void> updateProductDB(String name, String amount, String date,
+      String time, String category, int status, int index) async {
+    db = await checkDB();
+    String query =
+        "UPDATE trans SET name = '$name',amount = '$amount' ,date = '$date' ,time = '$time' ,category = '$category',status = '$status'  WHERE id = '$index'";
+    db!.rawUpdate(query);
+  }
 
-  void deleteProductDB() {}
+  Future<void> deleteProductDB(int index) async {
+    db = await checkDB();
+    String query = "DELETE FROM trans WHERE id = '$index'";
+    db!.rawDelete(query);
+  }
 
-  void readProductDB() {}
+  Future<List<Map>> readProductDB() async {
+    db = await checkDB();
+    String query = "SELECT * FROM trans";
+    List<Map> l1 = await db!.rawQuery(query);
+    return l1;
+  }
 }

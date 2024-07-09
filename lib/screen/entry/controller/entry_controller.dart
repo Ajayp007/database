@@ -4,13 +4,14 @@ import '../../../utils/helper/db_helper.dart';
 
 class EntryController extends GetxController {
   RxList<Map> categoryList = <Map>[].obs;
+  RxList<Map> transactionList = <Map>[].obs;
   DbHelper helper = DbHelper();
 
   Rx<DateTime> changeDate = DateTime.now().obs;
   Rx<TimeOfDay> changeTime = TimeOfDay.now().obs;
   RxnString changeCategory = RxnString();
 
-  Future<void> readExpenseIncome() async {
+  Future<void> readCategory() async {
     categoryList.value = await helper.readCategoryDB();
   }
 
@@ -22,10 +23,35 @@ class EntryController extends GetxController {
     changeTime.value = time;
   }
 
-  void insertExpenseIncome(
-      String name, String amount, String date, String time, int status) {
-    helper.insertProductDB(
-        name, amount, date, time, categoryList.string, status);
-    readExpenseIncome();
+  Future<void> transactionRead() async {
+    transactionList.value = await helper.readProductDB();
   }
+
+  void insertTransaction(String name, String amount, int status) {
+    helper.insertProductDB(
+        name,
+        amount,
+        "${changeDate.value.day}/${changeDate.value.month}/${changeDate.value.year}",
+        "${changeTime.value.hour}:${changeTime.value.minute}",
+        changeCategory.value!,
+        status);
+    transactionRead();
+  }
+
+  void deleteTransaction(int index) {
+    helper.deleteProductDB(index);
+    transactionRead();
+  }
+
+  void updateTransaction(String name, String amount, int status) {
+    helper.insertProductDB(
+        name,
+        amount,
+        "${changeDate.value.day}/${changeDate.value.month}/${changeDate.value.year}",
+        "${changeTime.value.hour}:${changeTime.value.minute}",
+        changeCategory.value!,
+        status);
+    transactionRead();
+  }
+
 }

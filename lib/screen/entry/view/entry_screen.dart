@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:database/screen/entry/controller/entry_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +17,8 @@ class _EntryScreenState extends State<EntryScreen> {
   @override
   void initState() {
     super.initState();
-    controller.readExpenseIncome();
+    controller.readCategory();
+    controller.transactionRead();
   }
 
   @override
@@ -147,8 +146,10 @@ class _EntryScreenState extends State<EntryScreen> {
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2050),
                           );
-
-                          controller.selectedData(d1!);
+                          if(d1 != null)
+                            {
+                              controller.selectedData(d1);
+                            }
                         },
                         label: Text(
                           "${controller.changeDate.value.day}/${controller.changeDate.value.month}/${controller.changeDate.value.year}",
@@ -166,7 +167,10 @@ class _EntryScreenState extends State<EntryScreen> {
                           TimeOfDay? t1 = await showTimePicker(
                               context: context,
                               initialTime: controller.changeTime.value);
-                          controller.selectedTime(t1!);
+                          if(t1 !=null)
+                            {
+                              controller.selectedTime(t1);
+                            }
                         },
                         label: Text(
                           "${controller.changeTime.value.hour}:${controller.changeTime.value.minute}",
@@ -223,11 +227,9 @@ class _EntryScreenState extends State<EntryScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      controller.insertExpenseIncome(
+                      controller.insertTransaction(
                           txtSubject.text,
                           txtAmount.text,
-                          controller.changeDate.toString(),
-                          controller.changeTime.toString(),
                           1);
                     },
                     child: Container(
@@ -246,11 +248,9 @@ class _EntryScreenState extends State<EntryScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      controller.insertExpenseIncome(
+                      controller.insertTransaction(
                           txtSubject.text,
                           txtAmount.text,
-                          controller.changeDate.toString(),
-                          controller.changeTime.toString(),
                           0);
                     },
                     child: Container(
