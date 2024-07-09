@@ -24,6 +24,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: const Text("Category"),
         centerTitle: true,
@@ -105,7 +106,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
               onPressed: () {
                 controller.updateCategory(
                     txtUpdate.text, controller.categoryList[index]['id']);
-
               },
               child: const Text("Submit"),
             ),

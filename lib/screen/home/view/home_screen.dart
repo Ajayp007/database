@@ -14,7 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Database"),
+        title: const Text("Dashboard"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -29,17 +29,46 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            DropdownButton(
-              iconDisabledColor: Colors.black,
-              iconEnabledColor: Colors.black,
-              items: const [
-                DropdownMenuItem(
-                  value: "food",
-                  child: Text("Food"),
+            const Row(
+              children: [
+                Icon(Icons.archive_outlined),
+                SizedBox(
+                  width: 20,
                 ),
+                Text(
+                  "categories",
+                  style: TextStyle(fontSize: 18),
+                )
               ],
-              onChanged: (value) {},
-            )
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return Container(
+                    height: 80,
+                    width: MediaQuery.sizeOf(context).width,
+                    margin: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                        border: Border.all(style: BorderStyle.solid),
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.grey.shade50),
+                    child: ListTile(
+                      onTap: () {},
+                      title: const Text("Category Name"),
+                      subtitle: const Text("9 JULY, 3:42 PM"),
+                      trailing: const Text(
+                        "Rs.300",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -47,7 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           Get.toNamed('entry');
         },
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+        ),
       ),
     );
   }
