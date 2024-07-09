@@ -58,12 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.grey.shade50),
                     child: ListTile(
                       onTap: () {},
+                      leading: const Text(
+                        "Rs.300",
+                      ),
                       title: const Text("Category Name"),
                       subtitle: const Text("9 JULY, 3:42 PM"),
-                      trailing: const Text(
-                        "Rs.300",
-                        style: TextStyle(fontSize: 18),
-                      ),
+                      trailing: IconButton(onPressed: (){}, icon: Icon(Icons.delete_outline)),
                     ),
                   );
                 },

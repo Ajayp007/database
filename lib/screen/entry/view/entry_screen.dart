@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:database/screen/entry/controller/entry_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,9 +37,9 @@ class _EntryScreenState extends State<EntryScreen> {
               color: Colors.grey.shade50,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.blue.shade200,
+                  color: Colors.grey.shade400,
                   blurRadius: 7,
-                  offset: const Offset(5, 8),
+                  //offset: const Offset(4, 4),
                 )
               ],
               borderRadius: BorderRadius.circular(20)),
@@ -58,7 +60,7 @@ class _EntryScreenState extends State<EntryScreen> {
                   ),
                 ),
                 child: const Text(
-                  "Expense/Income",
+                  "Income/Expense",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ),
@@ -84,7 +86,8 @@ class _EntryScreenState extends State<EntryScreen> {
                       child: TextField(
                         controller: txtSubject,
                         decoration: const InputDecoration(
-                            label: Text("Enter Your Description")),
+                          label: Text("Enter Your Description"),
+                        ),
                       ),
                     ),
                   ],
@@ -136,38 +139,43 @@ class _EntryScreenState extends State<EntryScreen> {
                     const SizedBox(
                       width: 35,
                     ),
-                    TextButton.icon(
-                      onPressed: () async {
-                        DateTime? d1 = await showDatePicker(
+                    Obx(
+                      () => TextButton.icon(
+                        onPressed: () async {
+                          DateTime? d1 = await showDatePicker(
                             context: context,
                             firstDate: DateTime(2000),
-                            lastDate: DateTime(2050));
+                            lastDate: DateTime(2050),
+                          );
 
-                        controller.selectedData(d1!);
-                      },
-                      label: Text(
-                        "${controller.changeDate.day}/${controller.changeDate.month}/${controller.changeDate.year}",
-                        style: const TextStyle(color: Colors.black),
-                      ),
-                      icon: const Icon(
-                        Icons.calendar_month,
-                        color: Colors.black,
+                          controller.selectedData(d1!);
+                        },
+                        label: Text(
+                          "${controller.changeDate.value.day}/${controller.changeDate.value.month}/${controller.changeDate.value.year}",
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        icon: const Icon(
+                          Icons.calendar_month,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
-                    TextButton.icon(
-                      onPressed: () async {
-                        TimeOfDay? t1 = await showTimePicker(
-                            context: context,
-                            initialTime: controller.changeTime);
-                        controller.selectedTime(t1!);
-                      },
-                      label: Text(
-                        "${controller.changeTime.hour}:${controller.changeTime.minute}",
-                        style: const TextStyle(color: Colors.black),
-                      ),
-                      icon: const Icon(
-                        Icons.watch_later_outlined,
-                        color: Colors.black,
+                    Obx(
+                      () => TextButton.icon(
+                        onPressed: () async {
+                          TimeOfDay? t1 = await showTimePicker(
+                              context: context,
+                              initialTime: controller.changeTime.value);
+                          controller.selectedTime(t1!);
+                        },
+                        label: Text(
+                          "${controller.changeTime.value.hour}:${controller.changeTime.value.minute}",
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        icon: const Icon(
+                          Icons.watch_later_outlined,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ],
@@ -191,17 +199,18 @@ class _EntryScreenState extends State<EntryScreen> {
                   padding: const EdgeInsets.all(20),
                   child: DropdownButton(
                     hint: const Text("Category"),
+                    value: controller.changeCategory.value,
                     isExpanded: true,
                     items: controller.categoryList
                         .map(
-                          (e) => const DropdownMenuItem(
-                            value: "food",
-                            child: Text("food"),
+                          (e) => DropdownMenuItem(
+                            value: "${e['category']}",
+                            child: Text("${e['category']}"),
                           ),
                         )
                         .toList(),
                     onChanged: (value) {
-                      controller.categoryList.value = value as List<Map>;
+                      controller.changeCategory.value = value as String;
                     },
                   ),
                 ),
