@@ -13,6 +13,7 @@ class CategoryScreen extends StatefulWidget {
 class _CategoryScreenState extends State<CategoryScreen> {
   TextEditingController txtCategory = TextEditingController();
   TextEditingController txtUpdate = TextEditingController();
+  TextEditingController txtSearch = TextEditingController();
   CategoryController controller = Get.put(CategoryController());
 
   @override
@@ -106,6 +107,26 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
+                SearchBar(
+                  backgroundColor: const WidgetStatePropertyAll(Colors.white),
+                  controller: txtSearch,
+                  shadowColor: const WidgetStatePropertyAll(Colors.white),
+                  hintText: "Search",
+                  trailing: [
+                    IconButton(
+                      onPressed: () {
+                        controller.liveSearchCategory(txtSearch.text);
+                      },
+                      icon: const Icon(Icons.search),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    controller.liveSearchCategory(value);
+                  },
+                ),
                 Obx(
                   () => Expanded(
                     child: ListView.builder(
@@ -125,7 +146,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                   onPressed: () {
                                     updateCategory(index);
                                   },
-                                  icon: const Icon(Icons.edit,color: Colors.black,),
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: Colors.black,
+                                  ),
                                 ),
                                 IconButton(
                                   onPressed: () {
@@ -133,7 +157,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                       controller.categoryList[index]['id'],
                                     );
                                   },
-                                  icon: const Icon(Icons.delete_outline,color: Colors.black,),
+                                  icon: const Icon(
+                                    Icons.delete_outline,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ],
                             ),

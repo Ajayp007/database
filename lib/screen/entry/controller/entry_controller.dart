@@ -5,6 +5,7 @@ import '../../../utils/helper/db_helper.dart';
 class EntryController extends GetxController {
   RxList<Map> categoryList = <Map>[].obs;
   RxList<Map> transactionList = <Map>[].obs;
+
   DbHelper helper = DbHelper();
 
   Rx<DateTime> changeDate = DateTime.now().obs;
@@ -13,6 +14,7 @@ class EntryController extends GetxController {
 
   Future<void> readCategory() async {
     categoryList.value = await helper.readCategoryDB();
+
   }
 
   void selectedData(DateTime date) {
@@ -50,8 +52,9 @@ class EntryController extends GetxController {
         "${changeDate.value.day}/${changeDate.value.month}/${changeDate.value.year}",
         "${changeTime.value.hour}:${changeTime.value.minute}",
         changeCategory.value!,
-        status
-        );
+        status);
     transactionRead();
   }
+
+
 }
