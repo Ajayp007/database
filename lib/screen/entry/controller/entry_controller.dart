@@ -44,14 +44,14 @@ class EntryController extends GetxController {
   }
 
   void updateTransaction(String name, String amount, int status) {
-    helper.insertProductDB(
+    helper.updateProductDB(
         name,
         amount,
         "${changeDate.value.day}/${changeDate.value.month}/${changeDate.value.year}",
         "${changeTime.value.hour}:${changeTime.value.minute}",
         changeCategory.value!,
-        status);
+        status
+        );
     transactionRead();
   }
-
 }

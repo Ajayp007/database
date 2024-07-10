@@ -24,46 +24,45 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Dashboard"),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, 'cate');
-            },
-            icon: const Icon(Icons.category),
+      body: Stack(
+        children: [
+          Image.asset(
+            "assets/images/iPhone.png",
+            fit: BoxFit.cover,
+            height: MediaQuery.sizeOf(context).height,
+            width: MediaQuery.sizeOf(context).width,
           ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          children: [
-            const Row(
-              children: [
-                Icon(Icons.archive_outlined),
-                SizedBox(
-                  width: 20,
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 40, left: 10, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Icon(Icons.menu),
+                    const Text(
+                      "Dashboard",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'cate');
+                      },
+                      icon: const Icon(Icons.category),
+                    ),
+                  ],
                 ),
-                Text(
-                  "Income/Expense",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Obx(
-              () => Expanded(
-                child: ListView.builder(
-                  itemCount: controller.transactionList.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      width: MediaQuery.sizeOf(context).width,
-                      margin: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
+              ),
+              Expanded(
+                child: Obx(
+                  () => ListView.builder(
+                    itemCount: controller.transactionList.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        width: MediaQuery.sizeOf(context).width,
+                        margin: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
                           color: Colors.grey.shade50,
                           boxShadow: [
                             BoxShadow(
@@ -71,65 +70,72 @@ class _HomeScreenState extends State<HomeScreen> {
                               blurRadius: 7,
                             ),
                           ],
-                          borderRadius: BorderRadius.circular(20)),
-                      child: ExpansionTile(
-                        title: Text(
-                          "${controller.transactionList[index]['name']}",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: controller.transactionList[index]
-                                          ['status'] ==
-                                      0
-                                  ? Colors.blue
-                                  : Colors.red),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        subtitle: Text(
-                            "${controller.transactionList[index]['date']}  ${controller.transactionList[index]['time']}"),
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 10),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Rs.${controller.transactionList[index]['amount']}",
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      color: controller.transactionList[index]
-                                                  ['status'] ==
-                                              0
-                                          ? Colors.blue
-                                          : Colors.red),
-                                ),
-                                const Spacer(),
-                                IconButton(
-                                  onPressed: () {
-                                    updateTransaction(index);
-                                  },
-                                  icon: const Icon(Icons.edit),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    controller.deleteTransaction(controller
-                                        .transactionList[index]['id']);
-                                  },
-                                  icon: const Icon(Icons.delete_outline),
-                                ),
-                              ],
-                            ),
+                        child: ExpansionTile(
+                          title: Text(
+                            "${controller.transactionList[index]['name']}",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: controller.transactionList[index]
+                                            ['status'] ==
+                                        0
+                                    ? Colors.blue
+                                    : Colors.red),
                           ),
-                        ],
-                      ),
-                    );
-                  },
+                          subtitle: Text(
+                              "${controller.transactionList[index]['date']}  ${controller.transactionList[index]['time']}"),
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 10),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Rs.${controller.transactionList[index]['amount']}",
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        color:
+                                            controller.transactionList[
+                                                            index]
+                                                        ['status'] ==
+                                                    0
+                                                ? Colors.blue
+                                                : Colors.red),
+                                  ),
+                                  const Spacer(),
+                                  IconButton(
+                                    onPressed: () {
+                                      updateTransaction(index);
+                                    },
+                                    icon: const Icon(Icons.edit),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      controller.deleteTransaction(
+                                          controller.transactionList[
+                                              index]['id']);
+                                    },
+                                    icon: const Icon(
+                                        Icons.delete_outline),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
         onPressed: () {
           Get.toNamed('entry');
         },
@@ -222,9 +228,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
                 Obx(
                   () => Padding(
                     padding: const EdgeInsets.all(20),
@@ -246,15 +249,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     InkWell(
                       onTap: () {
-                        controller.insertTransaction(
+                        controller.updateTransaction(
                             txtUpdateName.text, txtUpdateAmount.text, 1);
                       },
                       child: Container(
@@ -273,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        controller.insertTransaction(
+                        controller.updateTransaction(
                             txtUpdateName.text, txtUpdateAmount.text, 0);
                       },
                       child: Container(

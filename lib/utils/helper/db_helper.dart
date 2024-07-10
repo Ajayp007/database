@@ -66,10 +66,10 @@ class DbHelper {
   }
 
   Future<void> updateProductDB(String name, String amount, String date,
-      String time, String category, int status, int index) async {
+      String time, String category, int index) async {
     db = await checkDB();
     String query =
-        "UPDATE trans SET name = '$name',amount = '$amount' ,date = '$date' ,time = '$time' ,category = '$category',status = '$status'  WHERE id = '$index'";
+        "UPDATE trans SET name = '$name',amount = '$amount' ,date = '$date' ,time = '$time' ,category = '$category' WHERE id = '$index'";
     db!.rawUpdate(query);
   }
 
