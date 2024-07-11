@@ -32,7 +32,6 @@ class CategoryController extends GetxController {
     liveSearchList.clear();
     for (var x in categoryList) {
       if (x['category'].contains(text)) {
-        print(x['name']);
         liveSearchList.add(x);
       }
       categoryList.value = List.from(liveSearchList);

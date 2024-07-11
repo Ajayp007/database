@@ -86,9 +86,9 @@ class DbHelper {
     return l1;
   }
 
-  Future<List<Map>> liveSearchCategory(String name) async {
+  Future<List<Map>> filterTransaction(int index) async {
     db = await checkDB();
-    String query = "SELECT * FROM cate WHERE id = '$name'";
+    String query = "SELECT * FROM trans WHERE status = '$index'";
     List<Map> l1 = await db!.rawQuery(query);
     return l1;
   }

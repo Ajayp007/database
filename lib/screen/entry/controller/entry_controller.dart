@@ -5,16 +5,17 @@ import '../../../utils/helper/db_helper.dart';
 class EntryController extends GetxController {
   RxList<Map> categoryList = <Map>[].obs;
   RxList<Map> transactionList = <Map>[].obs;
+  List<Map> filterList = <Map>[];
 
   DbHelper helper = DbHelper();
 
   Rx<DateTime> changeDate = DateTime.now().obs;
   Rx<TimeOfDay> changeTime = TimeOfDay.now().obs;
   RxnString changeCategory = RxnString();
+  RxString filterValue = "all".obs;
 
   Future<void> readCategory() async {
     categoryList.value = await helper.readCategoryDB();
-
   }
 
   void selectedData(DateTime date) {
@@ -56,5 +57,16 @@ class EntryController extends GetxController {
     transactionRead();
   }
 
-
+  Future<void> filterTransaction(String value) async {
+    filterValue.value = value;
+    if (filterValue.value == "all") {
+      transactionRead();
+    } else if (filterValue.value == "income") {
+      filterList = await helper.filterTransaction(1);
+      transactionList.value = filterList;
+    } else if (filterValue.value == "expense") {
+      filterList = await helper.filterTransaction(0);
+      transactionList.value = filterList;
+    }
+  }
 }

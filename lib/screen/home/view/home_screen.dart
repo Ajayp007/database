@@ -37,19 +37,47 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 40, left: 10, right: 10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Icon(Icons.menu),
+                    const SizedBox(
+                      width: 140,
+                    ),
                     const Text(
                       "Dashboard",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
+                    const Spacer(),
                     IconButton(
                       onPressed: () {
                         Navigator.pushNamed(context, 'cate');
                       },
-                      icon: const Icon(Icons.category),
+                      icon: const Icon(
+                        Icons.category,
+                        color: Colors.black,
+                      ),
+                    ),
+                    PopupMenuButton(
+                      iconColor: Colors.black,
+                      color: Colors.transparent,
+                      shadowColor: Colors.white,
+                      itemBuilder: (context) {
+                        return [
+                          PopupMenuItem(
+                            onTap: () => controller.filterTransaction("all"),
+                            child: const Text("All"),
+                          ),
+                          PopupMenuItem(
+                            onTap: () => controller.filterTransaction("income"),
+                            child: const Text("Income"),
+                          ),
+                          PopupMenuItem(
+                            onTap: () =>
+                                controller.filterTransaction("expense"),
+                            child: const Text("Expense"),
+                          ),
+                        ];
+                      },
                     ),
                   ],
                 ),
@@ -96,13 +124,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     "Rs.${controller.transactionList[index]['amount']}",
                                     style: TextStyle(
                                         fontSize: 17,
-                                        color:
-                                            controller.transactionList[
-                                                            index]
-                                                        ['status'] ==
-                                                    0
-                                                ? Colors.blue
-                                                : Colors.red),
+                                        color: controller.transactionList[index]
+                                                    ['status'] ==
+                                                0
+                                            ? Colors.blue
+                                            : Colors.red),
                                   ),
                                   const Spacer(),
                                   IconButton(
@@ -113,12 +139,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      controller.deleteTransaction(
-                                          controller.transactionList[
-                                              index]['id']);
+                                      controller.deleteTransaction(controller
+                                          .transactionList[index]['id']);
                                     },
-                                    icon: const Icon(
-                                        Icons.delete_outline),
+                                    icon: const Icon(Icons.delete_outline),
                                   ),
                                 ],
                               ),
@@ -135,12 +159,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black87,
         onPressed: () {
           Get.toNamed('entry');
         },
         child: const Icon(
           Icons.add,
+          color: Colors.white,
         ),
       ),
     );
@@ -293,7 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ],
-            )
+            ),
           ],
         );
       },
